@@ -1,0 +1,46 @@
+---
+title: "individual1"
+author: "Molly Buckler"
+date: "9/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv") 
+str(choco)
+```
+
+#How are the ratings distributed? Create both a histogram and a boxplot and describe them. Don’t forget to mention outliers, if there are any.
+
+#need to go back to these to graphs and improve them
+
+```{r}
+hist(choco$Rating)
+boxplot(choco$Rating)
+```
+
+
+#How does the number of ratings depend on the year? Draw a bar chart of the number of reports.
+
+```{r}
+countPerYear <- table(choco$Date)
+barplot(countPerYear)
+```
+
+#Do ratings depend on the cacao percentage of a chocolate bar? Create both numerical and graphical summaries, and explain.
+
+```{r}
+choco.numeric <- choco[,sapply(choco, is.numeric)]
+head(choco.numeric)
+cor(choco.numeric)
+plot(choco$Rating, choco$Cocoa_Percent)
+
+```
+
+#How do different characteristics of the chocolate compare? To elaborate, which characteristics tend to be more favorable and which ones are not? Create both numerical and graphical summaries, and explain.
+
+#Brainstorm two analyses you would like to perform with your teammate. Describe in plain language what comparisons are you making. Create suitable numerical and graphical summaries for your analyses. Describe the results.
