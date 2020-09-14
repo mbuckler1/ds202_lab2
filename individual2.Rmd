@@ -1,0 +1,79 @@
+  
+---
+title: "individual2"
+author: "Armando Castillo"
+date: "9/13/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv")
+str(choco)
+```
+
+
+
+## Searching for Best Chocolates
+
+1. How are the ratings distributed? Create both a histogram and a boxplot and describe them. Don’t forget to mention outliers, if there are any.
+
+```{r}
+hist(choco$Rating, main='Ratings Distribution with Histogram', xlab='Rating', col=26)
+boxplot(choco$Rating, main='Ratings Distribution with Boxplot', xlab='Ratings', col=40)
+```
+
+The histogram is left skewed with some outliers closer to the lower rating side from 1.0 to 2.0
+The boxplot is also left skewed and has about 4 outliers on the lower end of the ratings
+
+
+2. How does the number of ratings depend on the year? Draw a bar chart of the number of reports.
+
+```{r}
+countPerYear <- table(choco$Date)
+barplot(countPerYear,  xlab='Year', ylab='Number of Ratings', col=60)
+```
+
+
+3. Do ratings depend on the cacao percentage of a chocolate bar? Create both numerical and graphical summaries, and explain.
+
+```{r}
+percent <- choco[c("Cocoa_Percent","Rating")]
+summary(percent)
+cor(choco$Cocoa_Percent, choco$Rating)
+plot(percent, col=100)
+title(main="Cocoa Percentage Vs. Rating")
+```
+
+Based off the scatter plot and correlation coefficient of cocoa percentage and rating. Rating does not depend on cocoa percentage. The correlation between them is very low at -0.15 and there is no visual relationship in the scatter plot. 
+
+
+4. How do different characteristics of the chocolate compare? To elaborate, which characteristics tend to be more favorable and which ones are not? Create both numerical and graphical summaries, and explain.
+
+```{r}
+head(summary(factor(choco$Characteristics1)), n=5)
+head(summary(factor(choco$Characteristics2)), n=5) 
+head(summary(factor(choco$Characteristics3)), n=5) 
+head(summary(factor(choco$Characteristics4)), n=5) 
+```
+
+There are definitely top choices for first, second, and the third characteristic. Looking at the data, creamy and sandy beat out the rest to be the top characteristic for characteristic 1.
+Sweet and nutty are the top for characteristic 2. 
+Cocoa and nutty along with roasty are all very close to the top for characteristic 3.
+Finally, for characteristic 4 it loos like there is minimal competition with small numbers. If we had to choice one it would be bitter.
+
+
+5. Brainstorm two analyses you would like to perform with your teammate. Describe in plain language what comparisons are you making. Create suitable numerical and graphical summaries for your analyses. Describe the results.
+
+Our first analysis will include us analyzing the data to see which companies had the highest rating chocolate.
+Our second analysis will be
+
+One can find our answers in our team.Rmd file
+
+
+
+
+
+
