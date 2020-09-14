@@ -2,78 +2,101 @@
 title: "team"
 output: html_document
 ---
+### This is Armando's and Molly's team file. We each did our own indivdual analysis which can be found in our ds202_lab2 repo. With Molly being indivdual 1 and Armando being indivdual 2. This team file summarizes our pre-analysis from questions 1-4 and also shows our 2 analyses from question 5.
+
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
 ```{r}
-choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv") 
+choco <- read.csv("https://raw.githubusercontent.com/xdaiISU/ds202materials/master/hwlabs/data/choco.csv")
 str(choco)
 ```
 
-#1)How are the ratings distributed? Create both a histogram and a boxplot and describe them. Don’t forget to mention outliers, if there are any.
+## Searching for Best Chocolates
+
+1. How are the ratings distributed? Create both a histogram and a boxplot and describe them. Don’t forget to mention outliers, if there are any.
 
 ```{r}
-hist(choco$Rating, main = 'Distribution of Ratings', xlab='Ratings')
-boxplot(choco$Rating, main = 'Distribution of Ratings')
+hist(choco$Rating, main='Ratings Distribution with Histogram', xlab='Rating', col=26)
+boxplot(choco$Rating, main='Ratings Distribution with Boxplot', xlab='Ratings', col=40)
 ```
 
-#The histogram is left skewed and the boxplot shows that there is four outliers and that the median is about 3.25.
+The histogram is left skewed with some outliers closer to the lower rating side from 1.0 to 2.0.
+The boxplot is also left skewed and has about 4 outliers on the lower end of the ratings.
 
 
-#2)How does the number of ratings depend on the year? Draw a bar chart of the number of reports.
+2. How does the number of ratings depend on the year? Draw a bar chart of the number of reports.
 
 ```{r}
 countPerYear <- table(choco$Date)
-barplot(countPerYear, main = 'Number of Ratings Per Year', xlab='Year', ylab='Number of Ratings')
+barplot(countPerYear,  xlab='Year', ylab='Number of Ratings', col=60)
 ```
 
-#The barplot shows the number of ratings per year. The year with the most was 2015 and the year with the least amount of ratings was 2020.
 
-
-#3)Do ratings depend on the cacao percentage of a chocolate bar? Create both numerical and graphical summaries, and explain.
+3. Do ratings depend on the cacao percentage of a chocolate bar? Create both numerical and graphical summaries, and explain.
 
 ```{r}
-choco.numeric <- choco[,sapply(choco, is.numeric)]
-head(choco.numeric)
-cor(choco.numeric)
-plot(choco$Rating, choco$Cocoa_Percent, main='Cocoa Percent by Rating', xlab='Rating', ylab='Cocoa Percent')
-
+percent <- choco[c("Cocoa_Percent","Rating")]
+summary(percent)
+cor(choco$Cocoa_Percent, choco$Rating)
+plot(percent, col=100)
+title(main="Cocoa Percentage Vs. Rating")
 ```
 
-#This scatter plot shows the relation between the Cocoa percent and the rating. The scatter plot shows that Cocoa percentage is concentrated around 70%. There is not much correlation between between the Cocoa percent and the rating. The correlation is -0.15101784.
+Based off the scatter plot and correlation coefficient of cocoa percentage and rating. Rating does not depend on cocoa percentage. The correlation between them is very low at -0.15 and there is no visual relationship in the scatter plot. 
 
-#4)How do different characteristics of the chocolate compare? To elaborate, which characteristics tend to be more favorable and which ones are not? Create both numerical and graphical summaries, and explain.
+
+4. How do different characteristics of the chocolate compare? To elaborate, which characteristics tend to be more favorable and which ones are not? Create both numerical and graphical summaries, and explain.
 
 ```{r}
-mRateWChar1 <- aggregate( Rating ~ Characteristics1, choco, mean )
-barplot(mRateWChar1$Rating, main='Rating with Characteristics2')
-sRateChar1 <- mRateWChar1[order(-mRateWChar1$Rating), ]
-head(sRateChar1)
+head(summary(factor(choco$Characteristics1)), n=5)
+head(summary(factor(choco$Characteristics2)), n=5) 
+head(summary(factor(choco$Characteristics3)), n=5) 
+head(summary(factor(choco$Characteristics4)), n=5) 
+```
 
-#Characteristics2
-mRateWChar2 <- aggregate( Rating ~ Characteristics2, choco, mean )
-barplot(mRateWChar2$Rating, main='Rating with Characteristics2')
-sRateChar2 <- mRateWChar2[order(-mRateWChar2$Rating), ]
-head(sRateChar2)
-#Characteristics3
-mRateWChar3 <- aggregate( Rating ~ Characteristics3, choco, mean )
-barplot(mRateWChar3$Rating, main='Rating with Characteristics3')
-sRateChar3 <- mRateWChar3[order(-mRateWChar3$Rating), ]
-head(sRateChar3)
+There are definitely top choices for first, second, and the third characteristic. Looking at the data, creamy and sandy beat out the rest to be the top characteristic for characteristic 1.
+Sweet and nutty are the top for characteristic 2. 
+Cocoa and nutty along with roasty are all very close to the top for characteristic 3.
+Finally, for characteristic 4 it loos like there is minimal competition with small numbers. If we had to choice one it would be bitter.
+
+# Working on the team.Rmd
+5. Brainstorm two analyses you would like to perform with your teammate. Describe in plain language what comparisons are you making. Create suitable numerical and graphical summaries for your analyses. Describe the results.
+
+Our first analysis will include us analyzing the data to see which companies had the highest rating chocolate specifically the top 5.
+
+Our second analysis was made by comparing bean origin with its mean rating, and the specific bean origin with its mean rating.
+
+
+## Analysis 1: These are the top 5 most highly rate chocolate companies.
+```{r}
+
+top5com <- rev(sort((table(choco$Company)), desc = True ))[1:5]
+top5com
+
+top5com_avg <- c(
+
+average_rating_som = mean(choco[choco$Company == "Soma", ]$Rating),
+average_rating_are = mean(choco[choco$Company == "Arete", ]$Rating),
+average_rating_fre = mean(choco[choco$Company == "Fresco", ]$Rating),
+average_rating_bon = mean(choco[choco$Company == "Bonnat", ]$Rating),
+average_rating_par = mean(choco[choco$Company == "Parlus", ]$Rating))
+
+names(top5com_avg) <- c("Soma", "Arete", "Fresco", "Bonnat", "Parlus")
+
+plot(top5com_avg,xaxt = "n", xlab = 'Company', ylab = 'Average Rating', col=100, pch=17)
+axis(1,at = 1:5,labels = names(top5com_avg))
+
+summary(top5com_avg)
 
 ```
 
-#To show how the different characteristics of chocolate compare I aggregated the data with the different levels of characteristics and the mean of the rating for each individual characteristic. The characteristics that are most favorable in Characteristic1 was cardamo, chocolate covered banana, distinct lemon, lrge nibs, and light color. All these characteristics have a mean rating of 4. Barplots where also created to show the data.
+### The top 5 companies that produced the most highly rated chocolates were Soma, Arete, Fresco, Bonnat and Parlus. Soma is at #1 and Fresco is placed last at #5
 
 
-#5)Brainstorm two analyses you would like to perform with your teammate. Describe in plain language what comparisons are you making. Create suitable numerical and graphical summaries for your analyses. Describe the results.
-
-#Anwer to first analysis question:
-
-
-#Anwer to second analysis question:
+## Analysis 2: Comparing bean origin with its mean rating, and the specific bean origin with its mean rating
 ```{r}
 #Regular Bean_Origin
 mRateWBeanOrg <- aggregate( Rating ~ Bean_Origin, choco, mean )
@@ -88,5 +111,11 @@ head(sRateSBeanOrg)
 barplot(mRateWSBeanOrg$Rating, main='mean rate with specific bean origin')
 ```
 
-#The comparison that I made in this section was the bean origin with its mean rating, and the specific bean origin with its mean rating. This section found the mean rating for each individual bean origin and then listed it from highest rating to lowest rating. The bean origin with the highest rating was Tobago with a mean rating of 3.625. The specific bean origin with the highest mean rating was ABOCFA Coop with a mean rating of 4. Bar plots were also created for these two.
+### The comparison that I made in this section was the bean origin with its mean rating, and the specific bean origin with its mean rating. This section found the mean rating for each individual bean origin and then listed it from highest rating to lowest rating. The bean origin with the highest rating was Tobago with a mean rating of 3.625. The specific bean origin with the highest mean rating was ABOCFA Coop with a mean rating of 4. Bar plots were also created for these two.
+
+
+
+
+
+
 
