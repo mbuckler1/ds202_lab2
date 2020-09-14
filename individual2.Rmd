@@ -68,9 +68,35 @@ Finally, for characteristic 4 it loos like there is minimal competition with sma
 5. Brainstorm two analyses you would like to perform with your teammate. Describe in plain language what comparisons are you making. Create suitable numerical and graphical summaries for your analyses. Describe the results.
 
 Our first analysis will include us analyzing the data to see which companies had the highest rating chocolate.
-Our second analysis will be
+Our second analysis can be found on my partners individual1.Rmd or one acess all of our analysis on our team.Rmd
 
-One can find our answers in our team.Rmd file
+
+# These are the top 5 most highly rate chocolate companies.
+```{r}
+
+top5com <- rev(sort((table(choco$Company)), desc = True ))[1:5]
+top5com
+
+top5com_avg <- c(
+
+average_rating_som = mean(choco[choco$Company == "Soma", ]$Rating),
+average_rating_are = mean(choco[choco$Company == "Arete", ]$Rating),
+average_rating_fre = mean(choco[choco$Company == "Fresco", ]$Rating),
+average_rating_bon = mean(choco[choco$Company == "Bonnat", ]$Rating),
+average_rating_par = mean(choco[choco$Company == "Parlus", ]$Rating))
+
+names(top5com_avg) <- c("Soma", "Arete", "Fresco", "Bonnat", "Parlus")
+
+plot(top5com_avg,xaxt = "n", xlab = 'Company', ylab = 'Average Rating', col=100, pch=17)
+axis(1,at = 1:5,labels = names(top5com_avg))
+
+summary(top5com_avg)
+
+```
+
+The top 5 companies that produced the most highly rated chocolates were Soma, Arete, Fresco, Bonnat and Parlus.
+Soma is at #1 and Fresco is placed last at #5
+
 
 
 
